@@ -15,7 +15,12 @@
         "jsonwebtoken": "*",
         "body-parser": "*",
         "passport": "*",
-        "passport-jwt": "*"
+        "passport-jwt": "*",
+        "gulp": "*",
+        "gulp-develop-server": "*",
+        "gulp-jshint": "*",
+        "fs": "*",
+        "multer": "*"
     },
     "author": "",
     "license": "ISC"

@@ -22,7 +22,7 @@ var StudentSchema = new Schema({
         name: {
             type: String
         },
-        picture: {
+        image: {
             type: String
         }
     },
@@ -30,7 +30,7 @@ var StudentSchema = new Schema({
         type: String,
         required: true
     }
-})
+});
 
 var Student = module.exports = mongoose.model('Student', StudentSchema);
 
@@ -59,17 +59,5 @@ module.exports.comparePassword = function(candidatePassword, hash, callback) {
     bcrypt.compare(candidatePassword, hash, (err, isMatch) => {
         if (err) throw err;
         callback(null, isMatch)
-    })
-}
-
-module.exports.createPortfolio = function(username, name, picture, callback) {
-    const query = {
-        username: username
-    }
-    Student.update(query, {
-        $set: {
-            "portfolio.name": name,
-            "portfolio.picture": picture
-        }
     })
 }

@@ -4,8 +4,11 @@ var passport = require('passport');
 var jwt = require('jsonwebtoken');
 var config = require('../config/database');
 var Student = require('../models/student');
+var Portfolio = require('../models/portfolio')
 var multer = require('multer');
 var path = require('path');
+var fs = require('fs');
+var decode64 = require('base64url').decode;
 
 //Register
 router.post('/register', (req, res, next) => {
@@ -59,8 +62,9 @@ router.post('/authenticate', (req, res, next) => {
                         email: student.email,
                         portfolio: {
                             name: student.portfolio.name,
-                            url: student.portfolio.url
-                        }
+                            image: student.portfolio.image
+                        },
+                        studentId: student.studentId
                     }
                 });
             } else {
@@ -78,30 +82,50 @@ router.post('/authenticate', (req, res, next) => {
 router.get('/profile', passport.authenticate('jwt', {
     session: false
 }), (req, res, next) => {
-    res.json({
-        student: req.user
-    });
-})
+    Portfolio.getPortfolioByUserId(req.user._id, (err, portfolio) => {
+        if (err) {
+            res.send({
+                student: req.user
+            });
+        } else {
+            res.send({
+                student: req.user,
+                portfolio: portfolio
+            });
+        }
+    })
+});
 
-var storage = multer.diskStorage({
-    destination: function(req, file, cb) {
-        cb(null, './uploads/')
-    },
-    filename: function(req, file, cb) {
-        Student.createPortfolio(req.user.username, req.user.)
-        cb(null, req.user.username + path.extname(file.originalname));
-
-    }
-})
-
-var upload = multer({
-    storage: storage
-})
-
-//portfolio
-router.post('/upload', passport.authenticate('jwt', {
+//Portfolio
+router.post('/portfolio', passport.authenticate('jwt', {
     session: false
-}), upload.array("uploads", 12), (req, res, next) => {
-    res.json(req.files);
+}), (req, res, next) => {
+    Portfolio.createPortfolio(req.user._id, req.body.name, req.body.image, (err) => {
+        if (err) {
+            res.json({
+                success: false
+            })
+        } else {
+            res.json({
+                success: true
+            })
+        }
+    })
+})
+
+router.get('/getPortfolio', passport.authenticate('jwt', {
+    session: false
+}), (req, res, next) => {
+    Portfolio.getPortfolioByUserId(req.user._id, (err, portfolio) => {
+        if (err) {
+            res.json({
+                success: false
+            })
+        } else {
+            res.json({
+                success: true
+            })
+        }
+    })
 })
 module.exports = router;

@@ -8,6 +8,7 @@ var config = require('./config/database');
 var router = require('./routes/router');
 var multer = require('multer');
 
+
 //Connect to database
 mongoose.connect(config.database);
 
@@ -34,7 +35,7 @@ app.use(cors());
 app.use(express.static(path.join(__dirname, 'public')));
 
 //Body Parser Middleware
-app.use(bodyParser.json());
+app.use(bodyParser.json({}));
 app.use(bodyParser.urlencoded({
     extended: true
 }));

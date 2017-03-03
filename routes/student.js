@@ -5,10 +5,15 @@ var jwt = require('jsonwebtoken');
 var config = require('../config/database');
 var Student = require('../models/student');
 var Portfolio = require('../models/portfolio')
+var Project = require('../models/project')
 var multer = require('multer');
 var path = require('path');
 var fs = require('fs');
 var decode64 = require('base64url').decode;
+var mongoose = require('mongoose');
+var ObjectId = require('mongoose').Types.ObjectId;
+var mongodb = require('mongodb');
+var MongoClient = mongodb.MongoClient;
 
 //Register
 router.post('/register', (req, res, next) => {
@@ -18,6 +23,7 @@ router.post('/register', (req, res, next) => {
         password: req.body.password,
         studentId: req.body.studentId
     });
+    console.log(newStudent)
 
     Student.addStudent(newStudent, (err, user) => {
         if (err) {
@@ -117,7 +123,7 @@ router.get('/getPortfolio', passport.authenticate('jwt', {
     session: false
 }), (req, res, next) => {
     Portfolio.getPortfolioByUserId(req.user._id, (err, portfolio) => {
-        if (err) {
+        if (err || !portfolio) {
             res.json({
                 success: false
             })
@@ -126,6 +132,87 @@ router.get('/getPortfolio', passport.authenticate('jwt', {
                 success: true
             })
         }
+    })
+})
+
+//Project
+router.post('/project', passport.authenticate('jwt', {
+    session: false
+}), (req, res, next) => {
+    Portfolio.getPortfolioByUserId(req.user._id, (err, portfolio) => {
+        if (err) console.log(err);
+        if (portfolio) {
+            if (req.body.type == "screenshot") {
+                Project.addScreenshot(req.body.title, req.body.screenshots, req.body.type, portfolio._id, (err) => {
+                    if (err) {
+                        res.json({
+                            success: false
+                        })
+                    } else {
+                        res.json({
+                            success: true
+                        })
+
+                        console.log(req.body)
+                    }
+                })
+            } else {
+                Project.addProject(req.body.title, req.body.details, req.body.type, portfolio._id, (err) => {
+                    if (err) {
+                        res.json({
+                            success: false
+                        })
+                    } else {
+                        res.json({
+                            success: true
+                        })
+                    }
+                })
+            }
+
+        }
+    })
+
+})
+router.get('/getProjects', passport.authenticate('jwt', {
+    session: false
+}), (req, res, next) => {
+    Portfolio.getPortfolioByUserId(req.user._id, (err, portfolio) => {
+        if (err || !portfolio) {
+            res.json({
+                success: false
+            })
+        } else {
+            Project.getProjectByPortfolioId(portfolio._id, (err, projects) => {
+                if (err) {
+                    res.json({
+                        success: false
+                    })
+                } else {
+                    res.json({
+                        success: true,
+                        projects: projects
+                    })
+                }
+
+            })
+        }
+    })
+})
+
+router.get('/getPortfolios', (req, res, next) => {
+    Portfolio.aggregate([{
+        $lookup: {
+            from: 'projects',
+            localField: "_id",
+            foreignField: 'portfolioId',
+            as: "projects"
+        }
+    }], (err, portfolios) => {
+        if (err) throw err;
+        res.send({
+            portfolios: portfolios
+        })
     })
 })
 module.exports = router;

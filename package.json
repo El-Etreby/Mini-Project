@@ -1,27 +1,28 @@
 {
-    "name": "iPortfolio",
-    "version": "1.0.0",
-    "description": "",
-    "main": "app.js",
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "node app"
-    },
-    "dependencies": {
-        "express": "*",
-        "mongoose": "*",
-        "bcryptjs": "*",
-        "cors": "*",
-        "jsonwebtoken": "*",
-        "body-parser": "*",
-        "passport": "*",
-        "passport-jwt": "*",
-        "gulp": "*",
-        "gulp-develop-server": "*",
-        "gulp-jshint": "*",
-        "fs": "*",
-        "multer": "*"
-    },
-    "author": "",
-    "license": "ISC"
+  "name": "iPortfolio",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app"
+  },
+  "dependencies": {
+    "bcryptjs": "*",
+    "body-parser": "*",
+    "cors": "*",
+    "express": "*",
+    "fs": "*",
+    "gulp": "*",
+    "gulp-develop-server": "*",
+    "gulp-jshint": "*",
+    "jsonwebtoken": "*",
+    "mongoose": "*",
+    "multer": "*",
+    "passport": "*",
+    "passport-jwt": "*",
+    "zone.js": "^0.7.4"
+  },
+  "author": "",
+  "license": "ISC"
 }

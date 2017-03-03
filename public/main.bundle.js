@@ -466,21 +466,6 @@ let ProfileComponent = class ProfileComponent {
                             console.log('error');
                         }
                     });
-                    var project = {
-                        title: this.title,
-                        type: this.type,
-                        details: this.details,
-                        screenshots: this.screenshots
-                    };
-                    this.authService.addProject(project).subscribe(data => {
-                        if (data.success) {
-                            this.flashMessagesService.show('You have successfully added your project', { cssClass: 'alert-success', timeout: 3000 });
-                            window.location.reload();
-                        }
-                        else {
-                            console.log('error');
-                        }
-                    });
                 }
                 else {
                     console.log('error');
@@ -895,7 +880,7 @@ module.exports = "<app-navbar> </app-navbar>\n\n<div class=\"container\">\n  <fl
 /***/ 684:
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"jumbotron text-center\">\n  <h1>iPortfolio</h1>\n  <p class=\"lead\">iPortfolio is an online platform to showcase your creative work, as well as to update and broadcast your portfolio in one place to a wide, engaged audience.</p>\n  <div *ngIf=\"!authService.checkLoggedIn()\">\n    <a class=\"btn btn-primary\" [routerLink]=\"['/register']\">Get Started</a> <a class=\"btn btn-primary\" [routerLink]=\"['/login']\">Log in</a>\n  </div>\n  <div *ngIf=\"authService.checkLoggedIn() && !portfolio\">\n    <a class=\"btn btn-primary \" [routerLink]=\"[ '/profile'] \">Create Your Portfolio</a>\n  </div>\n  <div *ngIf=\"authService.checkLoggedIn() && portfolio\">\n    <a class=\"btn btn-primary \" [routerLink]=\"[ '/profile'] \">Add work to your portfolio</a>\n  </div>\n</div>\n\n<div class=\"row \">\n  <div class=\"col-md-6 \">\n    <h3 align=\"center \">Express Backend</h3>\n    <p align=\"center\">perfjngpjbr2ngijp</p>\n  </div>\n  <div class=\"col-md-6 \">\n    <h3 align=\"center\">Express Backend</h3>\n    <p align=\"center\">perfjngpjbr2ngijp</p>\n  </div>\n</div>\n"
+module.exports = "<div class=\"jumbotron text-center\">\n  <h1>iPortfolio</h1>\n  <p class=\"lead\">iPortfolio is an online platform to showcase your creative work, as well as to update and broadcast your portfolio in one place to a wide, engaged audience.</p>\n  <div *ngIf=\"!authService.checkLoggedIn()\">\n    <a class=\"btn btn-primary\" [routerLink]=\"['/register']\">Get Started</a> <a class=\"btn btn-primary\" [routerLink]=\"['/login']\">Log in</a>\n  </div>\n  <div *ngIf=\"authService.checkLoggedIn() && !portfolio\">\n    <a class=\"btn btn-primary \" [routerLink]=\"[ '/profile'] \">Create Your Portfolio</a>\n  </div>\n  <div *ngIf=\"authService.checkLoggedIn() && portfolio\">\n    <a class=\"btn btn-primary \" [routerLink]=\"[ '/profile'] \">Add work to your portfolio</a>\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -909,7 +894,7 @@ module.exports = "<h2 class=\"page-header\">Login</h2>\n<form (submit)=\"onLogin
 /***/ 686:
 /***/ (function(module, exports) {
 
-module.exports = "<nav class=\"navbar navbar-inverse navbar-default\">\n  <div class=\"container\">\n    <div class=\"navbar-header\">\n      <button type=\"button\" class=\"navbar-toggle collapsed\" data-toggle=\"collapse\" data-target=\"#navbar\" aria-expanded=\"false\" aria-controls=\"navbar\">\n            <span class=\"sr-only\">Toggle navigation</span>\n            <span class=\"icon-bar\"></span>\n            <span class=\"icon-bar\"></span>\n            <span class=\"icon-bar\"></span>\n          </button>\n      <a class=\"navbar-brand\" href=\"/\">iPortfolio</a>\n    </div>\n    <div id=\"navbar\" class=\"collapse navbar-collapse\">\n      <ul class=\"nav navbar-nav navbar-right\">\n        <li *ngIf=\"authService.checkLoggedIn()\" [routerLinkActive]=\"['active']\" [routerLinkActiveOptions]=\"{exact:true}\"><a [routerLink]=\"[ '/search']\">Portfolios</a></li>\n        <li *ngIf=\"authService.checkLoggedIn()\" [routerLinkActive]=\"['active']\" [routerLinkActiveOptions]=\"{exact:true}\"><a [routerLink]=\"[ '/profile']\">Profile</a></li>\n        <li *ngIf=\"!authService.checkLoggedIn()\" [routerLinkActive]=\"['active']\" [routerLinkActiveOptions]=\"{exact:true}\"><a [routerLink]=\"[ '/login']\">Login</a></li>\n        <li *ngIf=\"!authService.checkLoggedIn()\" [routerLinkActive]=\"['active']\" [routerLinkActiveOptions]=\"{exact:true}\"><a [routerLink]=\"[ '/register']\">Register</a></li>\n        <li><a *ngIf=\"authService.checkLoggedIn()\" (click)=\"onLogoutClick()\">Logout</a></li>\n        <li *ngIf=\"authService.checkLoggedIn()\" [routerLinkActive]=\"['active']\" [routerLinkActiveOptions]=\"{exact:true}\"><a [routerLink]=\"[ '/about']\">About</a></li>\n      </ul>\n    </div>\n    <!--/.nav-collapse -->\n  </div>\n</nav>\n"
+module.exports = "<nav class=\"navbar navbar-inverse navbar-default\">\n  <div class=\"container\">\n    <div class=\"navbar-header\">\n      <button type=\"button\" class=\"navbar-toggle collapsed\" data-toggle=\"collapse\" data-target=\"#navbar\" aria-expanded=\"false\" aria-controls=\"navbar\">\n            <span class=\"sr-only\">Toggle navigation</span>\n            <span class=\"icon-bar\"></span>\n            <span class=\"icon-bar\"></span>\n            <span class=\"icon-bar\"></span>\n          </button>\n      <a class=\"navbar-brand\" href=\"/\">iPortfolio</a>\n    </div>\n    <div id=\"navbar\" class=\"collapse navbar-collapse\">\n      <ul class=\"nav navbar-nav navbar-right\">\n        <li [routerLinkActive]=\"['active']\" [routerLinkActiveOptions]=\"{exact:true}\"><a [routerLink]=\"[ '/search']\">Portfolios</a></li>\n        <li *ngIf=\"authService.checkLoggedIn()\" [routerLinkActive]=\"['active']\" [routerLinkActiveOptions]=\"{exact:true}\"><a [routerLink]=\"[ '/profile']\">Profile</a></li>\n        <li *ngIf=\"!authService.checkLoggedIn()\" [routerLinkActive]=\"['active']\" [routerLinkActiveOptions]=\"{exact:true}\"><a [routerLink]=\"[ '/login']\">Login</a></li>\n        <li *ngIf=\"!authService.checkLoggedIn()\" [routerLinkActive]=\"['active']\" [routerLinkActiveOptions]=\"{exact:true}\"><a [routerLink]=\"[ '/register']\">Register</a></li>\n        <li><a *ngIf=\"authService.checkLoggedIn()\" (click)=\"onLogoutClick()\">Logout</a></li>\n        <li *ngIf=\"authService.checkLoggedIn()\" [routerLinkActive]=\"['active']\" [routerLinkActiveOptions]=\"{exact:true}\"><a [routerLink]=\"[ '/about']\">About</a></li>\n      </ul>\n    </div>\n    <!--/.nav-collapse -->\n  </div>\n</nav>\n"
 
 /***/ }),
 

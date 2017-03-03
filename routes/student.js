@@ -103,6 +103,7 @@ router.get('/profile', passport.authenticate('jwt', {
 });
 
 //Portfolio
+/*
 router.post('/portfolio', passport.authenticate('jwt', {
     session: false
 }), (req, res, next) => {
@@ -117,7 +118,7 @@ router.post('/portfolio', passport.authenticate('jwt', {
             })
         }
     })
-})
+}) */
 
 router.get('/getPortfolio', passport.authenticate('jwt', {
     session: false
@@ -135,45 +136,7 @@ router.get('/getPortfolio', passport.authenticate('jwt', {
     })
 })
 
-//Project
-router.post('/project', passport.authenticate('jwt', {
-    session: false
-}), (req, res, next) => {
-    Portfolio.getPortfolioByUserId(req.user._id, (err, portfolio) => {
-        if (err) console.log(err);
-        if (portfolio) {
-            if (req.body.type == "screenshot") {
-                Project.addScreenshot(req.body.title, req.body.screenshots, req.body.type, portfolio._id, (err) => {
-                    if (err) {
-                        res.json({
-                            success: false
-                        })
-                    } else {
-                        res.json({
-                            success: true
-                        })
 
-                        console.log(req.body)
-                    }
-                })
-            } else {
-                Project.addProject(req.body.title, req.body.details, req.body.type, portfolio._id, (err) => {
-                    if (err) {
-                        res.json({
-                            success: false
-                        })
-                    } else {
-                        res.json({
-                            success: true
-                        })
-                    }
-                })
-            }
-
-        }
-    })
-
-})
 router.get('/getProjects', passport.authenticate('jwt', {
     session: false
 }), (req, res, next) => {
@@ -215,4 +178,148 @@ router.get('/getPortfolios', (req, res, next) => {
         })
     })
 })
+
+/*var storage = multer.diskStorage({ //multers disk storage settings
+    destination: function(req, file, cb) {
+        cb(null, '../uploads/');
+    },
+    filename: function(req, file, cb) {
+        var datetimestamp = Date.now();
+        cb(null, file.fieldname + '-' + datetimestamp + '.' + file.originalname.split('.')[file.originalname.split('.').length - 1]);
+    }
+});
+
+var upload = multer({ //multer settings
+    storage: storage
+}).single('file');
+
+/** API path that will upload the files */
+/*router.post('/upload', function(req, res) {
+    upload(req, res, function(err) {
+        console.log(req.file);
+        if (err) {
+            res.json({
+                error_code: 1,
+                err_desc: err
+            });
+            return;
+        }
+        res.json({
+            error_code: 0,
+            err_desc: null
+        });
+    });
+});*/
+
+router.post("/portfolio", passport.authenticate('jwt', {
+    session: false
+}), multer({
+    dest: "./public/uploads/"
+}).array("uploads[]", 12), function(req, res) {
+    var portfolio = JSON.parse(req.body.portfolio)
+    var image = ""
+    if (req.files[0]) {
+        image = "/uploads/".concat(req.files[0].filename)
+    }
+    Portfolio.createPortfolio(req.user._id, portfolio.name, image, (err) => {
+        if (err) {
+            res.json({
+                success: false
+            })
+        } else {
+            res.json({
+                success: true
+            })
+        }
+    })
+});
+router.post("/project", passport.authenticate('jwt', {
+    session: false
+}), multer({
+    dest: "./public/uploads/"
+}).array("uploads[]", 12), function(req, res) {
+    var project = JSON.parse(req.body.project)
+    var screenshots = []
+    console.log(req.files)
+    if (req.files) {
+        for (var i = 0; i < req.files.length; i++) {
+            screenshots.push("/uploads/".concat(req.files[i].filename))
+            console.log(screenshots)
+        }
+    }
+    Portfolio.getPortfolioByUserId(req.user._id, (err, portfolio) => {
+        if (err) console.log(err);
+        if (portfolio) {
+            if (project.type == "screenshot") {
+                Project.addScreenshot(project.title, screenshots, project.type, portfolio._id, (err) => {
+                    if (err) {
+                        res.json({
+                            success: false
+                        })
+                    } else {
+                        res.json({
+                            success: true
+                        })
+
+                        console.log(req.body)
+                    }
+                })
+            } else {
+                Project.addProject(project.title, project.details, project.type, portfolio._id, (err) => {
+                    if (err) {
+                        res.json({
+                            success: false
+                        })
+                    } else {
+                        res.json({
+                            success: true
+                        })
+                    }
+                })
+            }
+
+        }
+    })
+});
+
+//Project
+/*
+router.post('/project', passport.authenticate('jwt', {
+    session: false
+}), (req, res, next) => {
+    Portfolio.getPortfolioByUserId(req.user._id, (err, portfolio) => {
+        if (err) console.log(err);
+        if (portfolio) {
+            if (req.body.type == "screenshot") {
+                Project.addScreenshot(req.body.title, req.body.screenshots, req.body.type, portfolio._id, (err) => {
+                    if (err) {
+                        res.json({
+                            success: false
+                        })
+                    } else {
+                        res.json({
+                            success: true
+                        })
+
+                        console.log(req.body)
+                    }
+                })
+            } else {
+                Project.addProject(req.body.title, req.body.details, req.body.type, portfolio._id, (err) => {
+                    if (err) {
+                        res.json({
+                            success: false
+                        })
+                    } else {
+                        res.json({
+                            success: true
+                        })
+                    }
+                })
+            }
+
+        }
+    })
+
+})*/
 module.exports = router;

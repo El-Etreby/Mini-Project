@@ -744,13 +744,13 @@ let AuthService = class AuthService {
     registerStudent(student) {
         let headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["Headers"]();
         headers.append('Content-Type', 'application/json');
-        return this.http.post('http://localhost:3000/student/register', student, { headers: headers })
+        return this.http.post('http://34.251.97.183:3000/student/register', student, { headers: headers })
             .map(res => res.json());
     }
     authenticateStudent(student) {
         let headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["Headers"]();
         headers.append('Content-Type', 'application/json');
-        return this.http.post('http://localhost:3000/student/authenticate', student, { headers: headers })
+        return this.http.post('http://34.251.97.183:3000/student/authenticate', student, { headers: headers })
             .map(res => res.json());
     }
     storeStudentData(token, student) {
@@ -769,7 +769,7 @@ let AuthService = class AuthService {
         this.loadToken();
         headers.append('Authorization', this.authToken);
         headers.append('Content-Type', 'application/json');
-        return this.http.get('http://localhost:3000/student/profile', { headers: headers })
+        return this.http.get('http://34.251.97.183:3000/student/profile', { headers: headers })
             .map(res => res.json());
     }
     loadToken() {
@@ -784,7 +784,7 @@ let AuthService = class AuthService {
         this.loadToken();
         headers.append('Authorization', this.authToken);
         headers.append('Content-Type', 'application/json');
-        return this.http.get('http://localhost:3000/student/getPortfolio', { headers: headers })
+        return this.http.get('http://34.251.97.183:3000/student/getPortfolio', { headers: headers })
             .map(res => res.json());
     }
     /*
@@ -801,13 +801,13 @@ let AuthService = class AuthService {
         this.loadToken();
         headers.append('Authorization', this.authToken);
         headers.append('Content-Type', 'application/json');
-        return this.http.get('http://localhost:3000/student/getProjects', { headers: headers })
+        return this.http.get('http://34.251.97.183:3000/student/getProjects', { headers: headers })
             .map(res => res.json());
     }
     getPortfolios() {
         let headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["Headers"]();
         headers.append('Content-Type', 'application/json');
-        return this.http.get('http://localhost:3000/student/getPortfolios', { headers: headers })
+        return this.http.get('http://34.251.97.183:3000/student/getPortfolios', { headers: headers })
             .map(res => res.json());
     }
     createPortfolio(url, params, files, portfolio) {

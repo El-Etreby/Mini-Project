@@ -468,14 +468,14 @@ let ProfileComponent = class ProfileComponent {
         var portfolio = {
             name: this.name
         };
-        this.authService.createPortfolio("http://localhost:3000/student/portfolio", [], this.filesToUpload, portfolio).then((data) => {
+        this.authService.createPortfolio("/student/portfolio", [], this.filesToUpload, portfolio).then((data) => {
             if (data.success) {
                 var project = {
                     title: this.title,
                     type: this.type,
                     details: this.details
                 };
-                this.authService.addProject("http://localhost:3000/student/project", [], this.filesToUploadProject, project).then((data) => {
+                this.authService.addProject("/student/project", [], this.filesToUploadProject, project).then((data) => {
                     if (data.success) {
                         this.flashMessagesService.show('You have successfully created your portfolio', { cssClass: 'alert-success', timeout: 3000 });
                         window.location.reload();
@@ -496,7 +496,7 @@ let ProfileComponent = class ProfileComponent {
             type: this.type,
             details: this.details
         };
-        this.authService.addProject("http://localhost:3000/student/project", [], this.filesToUploadProject, project).then((data) => {
+        this.authService.addProject("/student/project", [], this.filesToUploadProject, project).then((data) => {
             if (data.success) {
                 this.flashMessagesService.show('You have added your project', { cssClass: 'alert-success', timeout: 3000 });
                 window.location.reload();

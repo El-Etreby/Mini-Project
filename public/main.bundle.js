@@ -750,7 +750,7 @@ let AuthService = class AuthService {
     authenticateStudent(student) {
         let headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["Headers"]();
         headers.append('Content-Type', 'application/json');
-        return this.http.post('http://34.251.97.183:3000/student/authenticate', student, { headers: headers })
+        return this.http.post('/student/authenticate', student, { headers: headers })
             .map(res => res.json());
     }
     storeStudentData(token, student) {
